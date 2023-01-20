@@ -5,7 +5,7 @@
         <router-link :to="generatePath()" class="font-bold hover:text-blue-800 hover:underline dark:hover:text-blue-400" title="View detailed endpoint health">
           {{ data.name }}
         </router-link>
-        <router-link :to="generatePath()" class="font-bold hover:text-blue-800 hover:underline dark:hover:text-blue-400" title="View endpoint"> {{ hostname }}
+        <router-link :to="generatePath()" class="font-bold hover:text-blue-800 hover:underline dark:hover:text-blue-400" title="View endpoint"> {{ data.results[data.results.length - 1].hostname }}
         </router-link>        
         <!-- <span v-if="data.results && data.results.length && data.results[data.results.length - 1].hostname" class='text-gray-500 font-light'> | {{ data.results[data.results.length - 1].hostname }}</span> -->
       </div>
