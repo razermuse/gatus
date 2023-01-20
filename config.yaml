@@ -1,53 +1,95 @@
 endpoints:
-  - name: front-end
-    group: core
-    url: "https://twin.sh/health"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[BODY].status == UP"
-      - "[RESPONSE_TIME] < 150"
-
-  - name: back-end
-    group: core
-    url: "https://example.org/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
-  - name: monitoring
-    group: internal
-    url: "https://example.org/"
+  - name: Ticketbook (8080)
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:8080/ticketbook/home.jsp"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
 
-  - name: nas
-    group: internal
-    url: "https://example.org/"
+  - name: NodeGoat (4000)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/NodeGoat_Docker/NodeGoat/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/NodeGoat_Docker/NodeGoat/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:4000/login"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
 
-  - name: example-dns-query
-    url: "8.8.8.8" # Address of the DNS server to use
+  - name: Vulpy (5000)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/Vulpy_Docker/vulpy/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/Vulpy_Docker/vulpy/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:5000/posts"
     interval: 5m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
     conditions:
-      - "[BODY] == 93.184.216.34"
-      - "[DNS_RCODE] == NOERROR"
+      - "[STATUS] == 200"
 
-  - name: icmp-ping
-    url: "icmp://example.org"
-    interval: 1m
+  - name: WebGoat (8079)
+    start_command: "cd /var/lib/jenkins/workspace/WebGoat_SpringBoot/WebGoat/; ./mvnw spring-boot:start"
+    stop_command: "ps aux  |  grep -i maven | grep -i [W]ebGoat  |  awk '{print $2}' | xargs sudo kill -9"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:8079/WebGoat/login"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Java Microservice Sample App (Bookstore Frontend) (8000)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:8000/health"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Java Microservice Sample App (Bookstore Data Manager) (8001)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:8001/list"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Java Microservice Sample App (Bookstore Dev Service) (8002)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/Java-microservice-bookstore_Docker/java-microservice-sample-apps/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:8002/application/ping"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"        
+
+  - name: Jenkins (8188)
+    group: Webapps
+    url: "icmp://jenkins.synopsys.pw"
+    interval: 5m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: check-domain-expiration
-    url: "https://example.org/"
-    interval: 1h
+  - name: RailsGoat (3000)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/RailsGoat_Docker/RailsGoat/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/RailsGoat_Docker/RailsGoat/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:3000"
+    interval: 5m
     conditions:
-      - "[DOMAIN_EXPIRATION] > 720h"
+      - "[STATUS] == 200"        
+
+  - name: JuiceShop (3001)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/JuiceShop_Docker/juice-shop/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/JuiceShop_Docker/juice-shop/docker-compose.yml down"
+    group: Webapps
+    url: "http://jenkins.synopsys.pw:3001"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: VAmPI (5002)
+    start_command: "docker-compose -f /var/lib/jenkins/workspace/VAmPI_Docker/VAmPI/docker-compose.yml up -d"
+    stop_command: "docker-compose -f /var/lib/jenkins/workspace/VAmPI_Docker/VAmPI/docker-compose.yml down"
+    group: APIs
+    url: "http://jenkins.synopsys.pw:5002"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
