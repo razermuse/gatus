@@ -2,6 +2,13 @@ web:
   port: 8450
 
 endpoints:
+  - name: poc09 (443)
+    group: Webapps
+    url: "https://poc09.blackduck.synopsys.com/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+
   - name: Ticketbook (8080)
     group: Webapps
     url: "http://jenkins.synopsys.pw:8080/ticketbook/home.jsp"
